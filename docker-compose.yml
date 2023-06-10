@@ -47,12 +47,35 @@ services:
     queue:
         image: especializati/laravel9-app
         restart: unless-stopped
-        command: "php artisan queue:work"
+        command:
+            - "bash"
+            - "-c"
+            - "php artisan queue:listen & php artisan horizon"
         volumes:
             - ./:/var/www
         depends_on:
             - redis
             - app
+        networks:
+            - laravel
+
+    # phpmyadmin
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:5.0.2
+        depends_on:
+            - db
+        environment:
+            PMA_ARBITRARY: 1
+            PMA_VERBOSE: "Laravel Monitor"
+            PMA_HOST: "${DB_HOST}"
+            PMA_PORT: "${DB_PORT}"
+            PMA_USER: "${DB_USERNAME}"
+            PMA_PASSWORD: "${DB_PASSWORD}"
+            UPLOAD_LIMIT: "20M"
+        ports:
+            - "8084:80"
+        volumes:
+            - .docker/phpmyadmin/data/sessions:/sessions
         networks:
             - laravel
 

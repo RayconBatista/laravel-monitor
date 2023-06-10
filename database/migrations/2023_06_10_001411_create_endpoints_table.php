@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('endpoints', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('site_id')->constrained();
+            $table->foreignUuid('site_id')->constrained()->onDelete('CASCADE');
             $table->string('endpoint');
             $table->unsignedBigInteger('frequency');
             $table->timestamp('next_check');

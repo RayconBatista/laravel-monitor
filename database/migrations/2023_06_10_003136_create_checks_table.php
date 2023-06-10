@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('checks', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('endpoint_id')->constrained()->index();
+            $table->foreignUuid('endpoint_id')->constrained()->index()->onDelete('CASCADE');
             $table->unsignedBigInteger('status_code');
             $table->text('response_body')->nullable();
             $table->timestamps();

@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Endpoint;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SiteResource extends JsonResource
+class CheckResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +15,9 @@ class SiteResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'url' => $this->url,
-            'user' => $this->user,
-            'endpoints' => EndpointResource::collection($this->endpoints) 
+            'endpoint' => EndpointResource::make($this->endpoint),
+            'status_code' => $this->status_code, 
+            'response_body' => $this->response_body
         ];
     }
 }
