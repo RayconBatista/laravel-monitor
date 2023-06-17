@@ -23,7 +23,7 @@ class EndpointCheckJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        public Endpoint $endpoint
+        public Endpoint $endpoint,
     ) {}
 
     /**
@@ -31,50 +31,17 @@ class EndpointCheckJob implements ShouldQueue
      */
     public function handle(): void
     {
-        try {
-            $url = $this->endpoint->url();
-            $response = Http::get($url);
-        
-            $status_code = $response->status();
-            $response_body = $this->responseBody($response);
-        
-            $this->endpoint->checks()->create([
-                'status_code' => $status_code,
-                'response_body' => $response_body
-            ]);
-        
-            $this->endpoint->update([
-                'next_check' => $this->nextCheck()
-            ]);
-        } catch (RequestException | ConnectionException $e) {
-            // Lidar com a exceção aqui, por exemplo, salvar o status_code e a mensagem de erro
-            $status_code = $e->getCode();
-            $response_body = $e->getMessage();
-        
-            if ($e instanceof RequestException && $e->response) {
-                $status_code = $e->response->status();
-                $response_body = $this->responseBody($e->response);
-            }
-        
-            $this->endpoint->checks()->create([
-                'status_code' => $status_code,
-                'response_body' => $response_body
-            ]);
-        
-            $this->endpoint->update([
-                'next_check' => $this->nextCheck()
-            ]);
-        }
-        // $url = $this->endpoint->url();
-        // $response = Http::get($url);
+        $url = $this->endpoint->url();
+        $response = Http::get($url);
 
-        // $this->endpoint->checks()->create([
-        //     'status_code' => $response->status(),
-        //     'response_body' => $this->responseBody($response)
-        // ]);
-        // $this->endpoint->update([
-        //     'next_check' => $this->nextCheck()
-        // ]);
+        $this->endpoint->checks()->create([
+            'status_code' => $response->status(),
+            'response_body' => $this->responseBody($response),
+        ]);
+
+        $this->endpoint->update([
+            'next_check' => $this->nextCheck(),
+        ]);
     }
 
     private function nextCheck()
@@ -82,12 +49,12 @@ class EndpointCheckJob implements ShouldQueue
         return now()->addMinutes($this->endpoint->frequency);
     }
 
-    private function responseBody(Response $response): string|Null
+    private function responseBody(Response $response): string|null
     {
         if ($response->successful()) {
             return null;
-        } else {
-            return (string) $response->body();
         }
+
+        return (string) $response->body();
     }
 }

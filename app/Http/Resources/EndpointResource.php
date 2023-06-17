@@ -19,7 +19,8 @@ class EndpointResource extends JsonResource
             'checks' => CheckResource::collection($this->checks),
             'endpoint' => $this->endpoint, 
             'frequency' => $this->frequency, 
-            'next_check' => $this->next_check
+            'next_check' => $this->next_check,
+            'status' => $this->status,
         ];
     }
 }

@@ -7,7 +7,8 @@ class SiteService
     public function store($inputs)
     {
         $user = auth()->user();
-        $user->sites()->create($inputs);
+        $inputs['status'] = true;
+        $user?->sites()->create($inputs);
         return redirect()
             ->route('sites.index')
             ->with('message', 'Site Criado com sucesso');

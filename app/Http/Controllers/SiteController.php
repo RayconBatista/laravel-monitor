@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateSiteRequest;
 use App\Http\Resources\SiteResource;
+use App\Models\Endpoint;
 use App\Models\Site;
 use Illuminate\Http\Request;
 use App\Services\SiteService;
@@ -12,11 +13,11 @@ class SiteController extends Controller
 {
     public function __construct(public SiteService $siteService)
     {}
-    public function index()
+    public function index(Endpoint $endpoint)
     {
         $sites = Site::with('user')->paginate();
         $data = SiteResource::collection($sites);
-        
+
         return view('admin/sites/index', [
             'sites' => $data
         ]);

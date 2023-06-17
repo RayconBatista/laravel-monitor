@@ -31,8 +31,8 @@
                     </div>
                     <div class="overflow-hidden bg-white rounded shadow-lg max-w dark:bg-gray-800">
                         <div class="px-6 py-4">
-                            <div class="mb-2 text-xl font-bold text-white">Total de Usuários</div>
-                            <p class="text-2xl text-gray-700 dark:text-gray-300">500</p>
+                            <div class="mb-2 text-xl font-bold text-white">Total de endpoints</div>
+                            <p class="text-2xl text-gray-700 dark:text-gray-300">{{ $endpoints }}</p>
                         </div>
                     </div>
                 </div>

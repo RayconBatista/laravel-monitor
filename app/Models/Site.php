@@ -13,7 +13,11 @@ class Site extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['url', 'user_id'];
+    protected $fillable = ['url', 'user_id', 'status'];
+
+    protected $casts = [
+        'status' => 'boolean'
+    ];
 
     protected static function booted()
     {

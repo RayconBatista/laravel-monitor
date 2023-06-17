@@ -50,7 +50,7 @@ services:
         command:
             - "bash"
             - "-c"
-            - "php artisan queue:listen & php artisan horizon"
+            - "php artisan queue:listen & php artisan schedule:work & php artisan horizon"
         volumes:
             - ./:/var/www
         depends_on:

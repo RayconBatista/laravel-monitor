@@ -28,6 +28,9 @@ class StoreUpdateSiteRequest extends FormRequest
                 'url', 
                 'max:255',
                 Rule::unique('sites')->where('user_id', auth()->user()->id)
+            ],
+            [
+                'status' => ['boolean']
             ]
         ];
     }

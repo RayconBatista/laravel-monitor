@@ -19,6 +19,7 @@ class SiteResource extends JsonResource
             'id' => $this->id,
             'url' => $this->url,
             'user' => $this->user,
+            'status' => $this->status,
             'endpoints' => EndpointResource::collection($this->endpoints) 
         ];
     }
