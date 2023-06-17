@@ -2,13 +2,20 @@
 
 namespace App\Services;
 
+
 class SiteService
 {
     public function store($inputs)
     {
         $user = auth()->user();
         $inputs['status'] = true;
-        $user?->sites()->create($inputs);
+
+        $site = $user?->sites()->create($inputs);
+
+        if ($site) {
+            $site->endpoints()->create(['endpoint' => '/', 'frequency' => 2]);
+        }
+
         return redirect()
             ->route('sites.index')
             ->with('message', 'Site Criado com sucesso');
