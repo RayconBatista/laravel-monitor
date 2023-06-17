@@ -11,9 +11,9 @@ use App\Services\SiteService;
 
 class SiteController extends Controller
 {
-    public function __construct(public SiteService $siteService)
-    {}
-    public function index(Endpoint $endpoint)
+    public function __construct(public SiteService $siteService) {}
+
+    public function index()
     {
         $sites = Site::with('user')->paginate();
         $data = SiteResource::collection($sites);
